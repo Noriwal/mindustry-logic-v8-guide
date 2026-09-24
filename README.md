@@ -7,6 +7,7 @@ Repositório para organizar os controladores MLog, registrar como foram testados
 - [Controladores e estado de cada programa](controllers/README.md)
 - [Procedimento de validação](docs/validation.md)
 - [Mindustry Tool Logic Editor e outras referências do site](docs/mindustry-tool.md)
+- [Esquemas comunitários para estudo](docs/schematics-community.md)
 - [Guia histórico, ainda não auditado](docs/legacy-guide.md)
 
 O [Mindustry Tool Logic Editor](https://mindustry-tool.com/en/tools/logic) é parte do nosso fluxo: importar uma cópia do código, visualizar os saltos e conferir parâmetros. Agradecemos ao **Mindustry Tool** por disponibilizar o editor e o conteúdo de referência. A importação não substitui o teste no jogo; as referências do site e o [manual de lógica do Mindustry](https://mindustrygame.github.io/wiki/logic/0-introduction/) devem ser conferidos contra a build V8 utilizada.
