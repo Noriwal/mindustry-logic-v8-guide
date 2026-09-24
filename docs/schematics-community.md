@@ -22,3 +22,27 @@ Levantamento em 24/09/2026 no [Mindustry Schematics](https://mindustryschematics
 4. Registrar diferenças de unidade, versão, links, mapa e comportamento observado. Não classificar como validado um esquema que só tenha sido visto na galeria.
 
 **Prioridade prática:** examinar primeiro `L-UnitSquadControl` e o modo de bombardeio de `Xenith v34.5` para o paredão Horizon; depois comparar o fluxo do `mono miner v1.3` com o estado de descarga do Quasar. O Mindustry Tool continua sendo nossa ferramenta de revisão do fluxo MLog; este catálogo fornece casos comunitários para estudar.
+
+
+## Inspeção dos arquivos de 24/09/2026
+
+Baixei os dois arquivos `.msch` diretamente das páginas acima e extraí **somente para análise** os códigos de seus processadores e os nomes dos links. A extração de texto e a verificação estática abaixo não equivalem a executar os esquemas no Mindustry. Os códigos integrais dos autores não foram republicados aqui.
+
+### L-UnitSquadControl, Sphynx
+
+- O arquivo contém **dois processadores**: o principal tem **113 instruções**, o outro escreve instruções no bloco de mensagem. O principal usa os links `arc1` e `message1`.
+- Apesar da descrição genérica, a unidade configurada no código é **`@fortress`**, com `unitMax = 10`. Essa linha teria de ser modificada para outro tipo; o funcionamento com Horizon não foi demonstrado.
+- A reserva de unidades usa `@flag` com um identificador calculado a partir das coordenadas do processador, evita unidades já controladas e mostra quantas foram aceitas. Essa é uma ideia útil para não disputar unidades com outro controlador.
+- Quando a saúde cai abaixo de **70%**, tenta localizar reparo. Usa a mira e o disparo de `arc1` para movimentação e ataque; quando o jogador atira, as unidades se agrupam perto do ponto indicado. Não encontrei atribuição explícita de posições laterais para um paredão nem seleção automática de alvo terrestre.
+- O nosso verificador estático contou as 113 instruções sem apontar salto numérico fora do programa. Isso não valida a sintaxe integral ou o comportamento.
+
+### Xenith v34.5, Ricochet_Master
+
+- O arquivo contém **13 códigos de processadores extraídos**, com coordenação por `cell1`, sorter, arc, switches e displays. O processador de comportamento com o modo de bombardeio tem **317 instruções**.
+- O modo indicado pelo sorter com `@titanium` corresponde ao comando **7**. Nele, o código vincula **`@zenith`**, consulta a carga e tenta recolher o item escolhido no sorter do núcleo.
+- Para dispersar unidades, calcula **linhas e ângulos**, aplica `sin`/`cos` e soma deslocamentos ao ponto do arc ou ao ponto de tiro. A geometria produz uma distribuição radial por fileiras; **não é o paredão alinhado** que queremos para as Horizons.
+- Nesse modo há `uradar enemy any any distance ...` e `targetp` para inimigos próximos, sem filtro `ground`. Portanto, não copiar a aquisição de alvo para nossa regra de ignorar unidades aéreas. Há também localização de torre inimiga quando o arc é controlado.
+- O verificador estático aceitou os 317 saltos do processador de comportamento. Em **outro** processador, o seletor de modo contém três `jump -1` associados a itens adicionais (`@thorium`, `@scrap`, `@silicon`), que nosso verificador sinaliza como fora do intervalo 0..59. Isso exige inspeção no editor do jogo antes de configurar esses itens; não interpretei o comportamento especial de `-1`.
+- Não há teste nesta análise de importação no jogo, disparo de bombas, limites de distância ou compatibilidade com a build V8 da usuária.
+
+**Aplicação ao Horizon:** estudar a reserva por flag e a contagem de unidades do primeiro esquema; usar a geometria do segundo apenas como comparação. Para atender nosso objetivo, ainda é necessário construir uma linha perpendicular ao vetor de ataque, compartilhar um alvo **terrestre** e confirmar no jogo que a Horizon cruza o ponto e solta bombas. O [Mindustry Tool Logic Editor](https://mindustry-tool.com/en/tools/logic) permanece a ferramenta de revisão visual do código que nós viermos a escrever.
