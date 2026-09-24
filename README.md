@@ -14,11 +14,11 @@ O [Mindustry Tool Logic Editor](https://mindustry-tool.com/en/tools/logic) é pa
 ## Verificação rápida
 
 ```bash
-python3 tools/check_mlog.py controllers/horizon/horizon.mlog
 python3 -m unittest discover -s tests
+python3 tools/check_mlog.py caminho/para/programa.mlog
 ```
 
-O primeiro comando passa a valer quando o programa Horizon completo for incluído. Ele detecta alguns erros estruturais, como `jump` para linha inexistente; não afirma que o código executa corretamente no Mindustry. A numeração de `jump` começa em **zero**. Qualquer correção deve entregar novamente o arquivo `.mlog` completo.
+Substitua o caminho do segundo comando pelo arquivo `.mlog` integral quando ele estiver no repositório. O verificador detecta alguns erros estruturais, como `jump` para linha inexistente; não afirma que o código executa corretamente no Mindustry. A numeração de `jump` começa em **zero**. Qualquer correção deve entregar novamente o arquivo `.mlog` completo.
 
 ## Próxima versão
 
